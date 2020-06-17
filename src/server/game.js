@@ -55,8 +55,7 @@ class Game {
       this.players[socket.id].setMoveDirection(dir);
   }
   handleStats(socket, values) {
-    console.log("game");
-    console.log(values);
+
     this.players[socket.id].changeStats(values)
   }
 

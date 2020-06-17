@@ -61,7 +61,7 @@ function handleMove(mDir) {
 }
 
 function handleStats(values) {
-  console.log("queen");
+
   game.handleStats(this, values);
 }
 function handleReload() {

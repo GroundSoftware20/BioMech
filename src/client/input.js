@@ -266,7 +266,6 @@ function handleInput(x, y, type) {
 function addSliderFunc() {
 
   for(var i = 0; i < values.length; i++) {
-    console.log(values[i]);
     document.getElementById(elements[i] + "R").value = values[i];
   }
   document.getElementById(elements[0] + "T").value = document.getElementById(elements[0] + "R").value;
