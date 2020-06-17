@@ -1,0 +1,291 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  background-color: black;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
+  width: 100%;
+}
+
+button {
+  font-size: 18px;
+  outline: none;
+  border: none;
+  color: black;
+  background-color: transparent;
+  padding: 5px 20px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: rgb(230, 230, 230);
+}
+
+button:focus {
+  outline: none;
+}
+
+.hidden {
+  display: none !important;
+}
+p.stat{
+  font-size: 12px;
+  padding: 0px;
+  height: 8px;
+}
+div.stat{
+
+  display: inline;
+  position: relative;
+  top: +20px;
+}
+input[type="range"].stat{
+    position: absolute;
+    left: 100px;
+    height: 8px;
+    width: 150px;
+    display: inline-block;
+    margin: 1.5px 0;
+    background-color: transparent;
+    -webkit-appearance: none;
+
+}
+input[type="text"].stat{
+  width: 80px;
+  height: 20px;
+  display: inline-block;
+  position: absolute;
+  right: 10px;
+
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+input[type=range]::-webkit-slider-runnable-track {
+  background: #000000;
+  border: 0.2px solid #010101;
+  border-radius: 1.3px;
+  width: 100%;
+  height: 1.4px;
+  cursor: pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  margin-top: -6px;
+  width: 5px;
+  height: 13px;
+  background: #0000ff;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  -webkit-appearance: none;
+}
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #000000;
+}
+input[type=range]::-moz-range-track {
+  background: #000000;
+  border: 0.2px solid #010101;
+  border-radius: 1.3px;
+  width: 100%;
+  height: 1.4px;
+  cursor: pointer;
+}
+input[type=range]::-moz-range-thumb {
+  width: 5px;
+  height: 13px;
+  background: #0000ff;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+input[type=range]::-ms-track {
+  background: transparent;
+  border-color: transparent;
+  border-width: 6.8px 0;
+  color: transparent;
+  width: 100%;
+  height: 1.4px;
+  cursor: pointer;
+}
+input[type=range]::-ms-fill-lower {
+  background: #000000;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+}
+input[type=range]::-ms-fill-upper {
+  background: #000000;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+}
+input[type=range]::-ms-thumb {
+  width: 5px;
+  height: 13px;
+  background: #0000ff;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 0px;
+  /*Needed to keep the Edge thumb centred*/
+}
+input[type=range]:focus::-ms-fill-lower {
+  background: #000000;
+}
+input[type=range]:focus::-ms-fill-upper {
+  background: #000000;
+}
+/*TODO: Use one of the selectors from https://stackoverflow.com/a/20541859/7077589 and figure out
+how to remove the virtical space around the range input in IE*/
+@supports (-ms-ime-align:auto) {
+  /* Pre-Chromium Edge only styles, selector taken from hhttps://stackoverflow.com/a/32202953/7077589 */
+  input[type=range] {
+    margin: 0;
+    /*Edge starts the margin from the thumb, not the track as other browsers do*/
+  }
+}
+
+
+
+
+#game-canvas {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+#background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+#play-menu {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  padding: 20px 30px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#play-menu p {
+  margin-bottom: 0;
+}
+
+#play-menu input {
+  font-size: 18px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid black;
+  margin-bottom: 5px;
+  padding: 3px;
+  text-align: center;
+}
+
+#play-menu input:hover {
+  outline: none;
+}
+
+#leaderboard {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  border-radius: 5px;
+}
+#dev {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+  width: 350px;
+  height: 450px;
+}
+
+#hud {
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+}
+
+#leaderboard th {
+  text-align: center;
+  padding: 2px 5px;
+}
+
+#leaderboard td {
+  text-align: center;
+  padding: 2px 5px;
+}
+
+#disconnect-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+}
+
+#disconnect-modal > div {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+  padding: 15px 20px;
+  background-color: white;
+  border-radius: 5px;
+  text-align: center;
+}
+
+@media screen and (max-width: 640px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+  }
+
+  #play-menu {
+    padding: 10px 15px;
+    min-width: 280px;
+  }
+
+  #disconnect-modal > div {
+    padding: 10px;
+    min-width: 280px;
+  }
+
+  #leaderboard th {
+    padding: 0 3px;
+  }
+
+  #leaderboard td {
+    padding: 0 3px;
+  }
+
+  #leaderboard table {
+    font-size: 14px;
+  }
+}
