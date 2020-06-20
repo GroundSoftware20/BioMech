@@ -1,5 +1,23 @@
 module.exports = Object.freeze({
 
+  MHP: 0, 
+  PR: 1,
+  SPD: 2,
+  NRG: 3,
+  NRGR: 4, 
+  SPDC: 5,
+  FC: 6,
+  RC: 7,
+  BD: 8, 
+  BS: 9,
+  BR: 10,
+  FC: 11,
+  CS: 12, 
+  RT: 13,
+  R: 14,
+  V: 15,
+  HR: 16,
+
   PLAYER_MAX_HP: 100,
   PLAYER_RADIUS: 20,
   PLAYER_SPEED: 400,
@@ -20,7 +38,6 @@ module.exports = Object.freeze({
 
   SCORE_BULLET_HIT: 20,
   SCORE_PER_SECOND: 1,
-  PLAYER_INPUT_COOLDOWN: 0.7,
 
   MAP_SIZE: 3000,
   MSG_TYPES: {
