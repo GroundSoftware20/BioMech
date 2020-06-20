@@ -39,7 +39,7 @@
       Created By Noah and Jason
     </p>
     <hr />
-    <input type="text" id="username-input" placeholder="XxXNoobXterminatorXxX" />
+    <input type="text" id="username-input" placeholder="NoobBGone" maxLength=14/>
     <button id="play-button">TEST</button>
   </p></div>
   <div id="leaderboard" class="hidden">
@@ -60,87 +60,87 @@
   </div>
   <div id="dev" class="hidden">  
     <div class = "stat"><p class="stat">Max Health</p></div>
-    <input id="healthR" class = "stat" type="range" min="1" max="9999999" value="100">
-    <input id="healthT" type="text" class = "stat" maxlength="7">
+    <input id="healthR" class = "stat" type="range" min="1" max="400">
+    <input id="healthT" type="text" class = "stat" maxlength="6">
 
     <div class = "stat"><p class="stat">Tank Size</p></div>
-    <input id="tankSizeR" class = "stat" type="range" min="1" max="9999" value="150">
-    <input id="tankSizeT" class = "stat" type="text" maxlength="4">
+    <input id="tankSizeR" class = "stat" type="range" min="10" max="100">
+    <input id="tankSizeT" class = "stat" type="text" maxlength="6">
 
 
     <div class = "stat"><p class="stat">Tank Speed</p></div>
-    <input id="tankSpeedR" class = "stat" type="range" min="1" max="999999" value="20">
-    <input id="tankSpeedT" class = "stat" type="text" maxlength="6">
+    <input id="tankSpeedR" class = "stat" type="range" min="0" max="1000">
+    <input id="tankSpeedT" class = "stat" type="text" maxlength="7">
 
 
     <div class = "stat"><p class="stat">Energy Capacity</p></div>
-    <input id="energyCapR" class = "stat" type="range" min="1" max="999999" value="1200">
-    <input id="energyCapT" class = "stat" type="text" maxlength="6">
+    <input id="energyCapR" class = "stat" type="range" min="1" max="1000">
+    <input id="energyCapT" class = "stat" type="text" maxlength="7">
 
 
     <div class = "stat"><p class="stat">E. Recharge Rate</p></div>
-    <input id="energyRegenR" class = "stat" type="range" min="1" max="999999" value="50">
+    <input id="energyRegenR" class = "stat" type="range" min="0" max="100" step = "0.01">
     <input id="energyRegenT" class = "stat" type="text" maxlength="6">
 
 
     <div class = "stat"><p class="stat">Movement Cost</p></div>
-    <input id="speedCostR" class = "stat" type="range" min="1" max="999999" value="50">
+    <input id="speedCostR" class = "stat" type="range" min="0" max="100" step = "0.01">
     <input id="speedCostT" class = "stat" type="text" maxlength="6">
 
 
     <div class = "stat"><p class="stat">Firing Cost</p></div>
-    <input id="fireCostR" class = "stat" type="range" min="1" max="999999" value="50">
+    <input id="fireCostR" class = "stat" type="range" min="0" max="100" step = "0.01">
     <input id="fireCostT" class = "stat" type="text" maxlength="6">
 
 
     <div class = "stat"><p class="stat">Reload Cost</p></div>
-    <input id="reloadCostR" class = "stat" type="range" min="1" max="999999" value="50">
-    <input id="reloadCostT" class = "stat" type="text" maxlength="6">
+    <input id="reloadCostR" class = "stat" type="range" min="0" max="1000" step = "0.01">
+    <input id="reloadCostT" class = "stat" type="text" maxlength="7">
 
 
     <div class = "stat"><p class="stat">Bullet Damage</p></div>
-    <input id="bulletDamR" class = "stat" type="range" min="1" max="9999999" value="50">
-    <input id="bulletDamT" class = "stat" type="text" maxlength="7">
+    <input id="bulletDamR" class = "stat" type="range" min="0" max="200" step = "0.01">
+    <input id="bulletDamT" class = "stat" type="text" maxlength="6">
 
 
     <div class = "stat"><p class="stat">Bullet Speed</p></div>
-    <input id="bulletSpeedR" class = "stat" type="range" min="1" max="9999999" value="60">
+    <input id="bulletSpeedR" class = "stat" type="range" min="1" max="2000">
     <input id="bulletSpeedT" class = "stat" type="text" maxlength="7">
 
 
     <div class = "stat"><p class="stat">Bullet Size</p></div>
-    <input id="bulletSizeR" class = "stat" type="range" min="1" max="9999" value="200">
-    <input id="bulletSizeT" class = "stat" type="text" maxlength="4">
+    <input id="bulletSizeR" class = "stat" type="range" min="1" max="40" step = "0.01">
+    <input id="bulletSizeT" class = "stat" type="text" maxlength="6">
 
 
     <div class = "stat"><p class="stat">Firing Duration</p></div>
-    <input id="firingRateR" class = "stat" type="range" min="1" max="9999" value="200">
-    <input id="firingRateT" class = "stat" type="text" maxlength="4">
+    <input id="firingRateR" class = "stat" type="range" min="0.01" max="5" step = "0.01">
+    <input id="firingRateT" class = "stat" type="text" maxlength="5">
 
 
     <div class = "stat"><p class="stat">Clip Size</p></div>
-    <input id="clipSizeR" class = "stat" type="range" min="1" max="99999" value="1">
-    <input id="clipSizeT" class = "stat" type="text" maxlength="5">
+    <input id="clipSizeR" class = "stat" type="range" min="1" max="60">
+    <input id="clipSizeT" class = "stat" type="text" maxlength="3">
 
 
     <div class = "stat"><p class="stat">Reload Time</p></div>
-    <input id="reloadRateR" class = "stat" type="range" min="1" max="9999" value="10">
+    <input id="reloadRateR" class = "stat" type="range" min="0.01" max="5" step = "0.01">
     <input id="reloadRateT" class = "stat" type="text" maxlength="4">
 
 
     <div class = "stat"><p class="stat">Bullet Range</p></div>
-    <input id="bulletRangeR" class = "stat" type="range" min="1" max="9999999" value="200">
-    <input id="bulletRangeT" class = "stat" type="text" maxlength="7">
+    <input id="bulletRangeR" class = "stat" type="range" min="200" max="1000">
+    <input id="bulletRangeT" class = "stat" type="text" maxlength="4">
 
 
     <div class = "stat"><p class="stat">Vision Range</p></div>
-    <input id="visionR" class = "stat" type="range" min="1" max="9999" value="200">
-    <input id="visionT" class = "stat" type="text" maxlength="4">
+    <input id="visionR" class = "stat" type="range" min="1" max="15">
+    <input id="visionT" class = "stat" type="text" maxlength="2">
 
 
     <div class = "stat"><p class="stat">Health Regen</p></div>
-    <input id="regenR" class = "stat" type="range" min="0" max="9999999" value="200">
-    <input id="regenT" class = "stat" type="text" maxlength="7">
+    <input id="regenR" class = "stat" type="range" min="0" max="50" step = "0.01">
+    <input id="regenT" class = "stat" type="text" maxlength="6">
   </div>
 
   <div id="disconnect-modal" class="hidden">

@@ -14,16 +14,20 @@ class Game {
   }
 
   addPlayer(socket, username) {
+
     if(username.substring(0,4) != "coin")
       return false;
-    this.sockets[socket.id] = socket;
+    
+    else {
+      this.sockets[socket.id] = socket;
 
-    // Generate a position to start this player at.
-    const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
-    const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
-    this.players[socket.id] = new Player(socket.id, username.substring(4), x, y);
+      // Generate a position to start this player at.
+      const x = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
+      const y = Constants.MAP_SIZE * (0.25 + Math.random() * 0.5);
+      this.players[socket.id] = new Player(socket.id, username.substring(4), x, y);
 
-    return true;
+      return true;
+    }
   }
 
   removePlayer(socket) {
@@ -31,7 +35,7 @@ class Game {
     delete this.players[socket.id];
   }
 
-  handleInput(socket, dir, eType) {
+  handleInput(socket, eType) {
 
     if (this.players[socket.id]) {
 
@@ -117,6 +121,7 @@ class Game {
         socket.emit(Constants.MSG_TYPES.GAME_UPDATE, this.createUpdate(player, leaderboard));
       });
       this.shouldSendUpdate = false;
+      
     } else {
       this.shouldSendUpdate = true;
     }

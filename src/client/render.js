@@ -14,6 +14,9 @@ const canvas = document.getElementById('game-canvas');
 const context = canvas.getContext('2d');
 const back = document.getElementById('background');
 const backContext = back.getContext('2d');
+var pat;
+
+
 setCanvasDimensions();
 
 function setCanvasDimensions() {
@@ -42,7 +45,7 @@ function render() {
 
 
   // Draw background
-  renderBackground(me.x, me.y);
+  renderBackgroundA(me.x, me.y);
   context.clearRect(0, 0, canvas.width, canvas.height);
   // Draw boundaries
   context.strokeStyle = 'black';
@@ -66,20 +69,26 @@ function updateHUD(clip) {
 
 function renderBackground(x, y) {
 
+  createImageBitmap(getAsset('backpanel.png')).then(function(result) {
+
+    pat  = backContext.createPattern(result, "repeat");
+  }).catch(console.error);
+
+  renderBackgroundA(x,y);
+
+}
+
+function renderBackgroundA(x, y) {
+
   const backgroundX = -x - back.width / 2;
   const backgroundY = -y - back.height / 2;
 
-  createImageBitmap(getAsset('backpanel.png')).then(function(result) {
+  backContext.fillStyle = pat;
+  backContext.translate(backgroundX, backgroundY);
 
-    const pat  = backContext.createPattern(result, "repeat");
-    backContext.fillStyle = pat;
-    backContext.translate(backgroundX, backgroundY);
+  backContext.fillRect(-backgroundX, -backgroundY, canvas.width, canvas.height);
 
-    backContext.fillRect(-backgroundX, -backgroundY, canvas.width, canvas.height);
-  
-    backContext.translate(-backgroundX, -backgroundY);
-  }).catch(console.error);
-
+  backContext.translate(-backgroundX, -backgroundY);
 
 }
 
@@ -120,21 +129,28 @@ function renderPlayer(me, player) {
     2,
   );
 
-    // Draw energy bar
-    context.fillStyle = 'blue';
-    context.fillRect(
-      canvasX - player.tankSize,
-      canvasY + player.tankSize + 12,
-      PLAYER_RADIUS * 2,
-      2,
-    );
-    context.fillStyle = 'white';
-    context.fillRect(
-      canvasX - player.tankSize + player.tankSize * 2 * player.energy / player.maxEnergy,
-      canvasY + player.tankSize + 12,
-      PLAYER_RADIUS * 2 * (1 - player.energy / player.maxEnergy),
-      2,
-    );
+  // Draw energy bar
+  context.fillStyle = 'blue';
+  context.fillRect(
+    canvasX - player.tankSize,
+    canvasY + player.tankSize + 12,
+    PLAYER_RADIUS * 2,
+    2,
+  );
+  context.fillStyle = 'white';
+  context.fillRect(
+    canvasX - player.tankSize + player.tankSize * 2 * player.energy / player.maxEnergy,
+    canvasY + player.tankSize + 12,
+    PLAYER_RADIUS * 2 * (1 - player.energy / player.maxEnergy),
+    2,
+  );
+  //if(player != me) {
+    context.fillStyle = "steelblue";
+    context.font = "30px Ariel";
+    context.fillText(player.username, canvasX - context.measureText(player.username).width / 2, 
+                    canvasY + player.tankSize + 48);
+  //}
+    
 }
 
 function renderBullet(me, bullet) {
@@ -161,6 +177,7 @@ let renderInterval = setInterval(renderMainMenu, 1000 / 60);
 
 // Replaces main menu rendering with game rendering.
 export function startRendering() {
+
   clearInterval(renderInterval);
   
   renderInterval = setInterval(render, 1000 / 240);
@@ -168,6 +185,8 @@ export function startRendering() {
 
 // Replaces game rendering with main menu rendering.
 export function stopRendering() {
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
   clearInterval(renderInterval);
   renderInterval = setInterval(renderMainMenu, 1000 / 60);
 }

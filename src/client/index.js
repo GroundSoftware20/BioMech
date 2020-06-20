@@ -39,7 +39,7 @@ function startGame() {
       playMenu.classList.add('hidden');
       initState();
       startCapturingInput();
-      startRendering();
+      startRendering(usernameInput.value);
       setLeaderboardHidden(false);
 }
 

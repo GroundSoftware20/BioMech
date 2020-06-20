@@ -10,7 +10,6 @@ class Player extends ObjectClass {
     this.mDirection = -10;
     this.shoot = false;
     this.reload = false;
-    this.keyCooldown = Constants.PLAYER_INPUT_COOLDOWN;
 
     this.maxHealth = Constants.PLAYER_MAX_HP;
     this.tankSize = Constants.PLAYER_RADIUS;
@@ -46,9 +45,8 @@ class Player extends ObjectClass {
     this.hp = Math.min(this.maxHealth, this.hp + this.healthRegen);
     this.energy = Math.min(this.maxEnergy, this.energy + this.energyRegen);
 
-    if(this.keyCooldown > 0 && this.mDirection != -10) {
+    if(this.mDirection != -10) {
 
-      //this.keyCooldown -= dt;
       this.energy -= this.speedCost;
       this.x += dt * this.speed * Math.sin(this.mDirection);
       this.y -= dt * this.speed * Math.cos(this.mDirection);
@@ -101,8 +99,8 @@ class Player extends ObjectClass {
   }
 
   setMoveDirection(mDir) {
+
     this.mDirection = mDir;
-    this.keyCooldown = Constants.PLAYER_INPUT_COOLDOWN;
   }
   changeStats(values) {
     
@@ -144,6 +142,7 @@ class Player extends ObjectClass {
       tankSize: this.tankSize,
       visionRange: this.visionRange,
       clip: this.clip,
+      username: this.username,
     };
   }
 }

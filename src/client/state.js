@@ -12,16 +12,19 @@ let gameStart = 0;
 let firstServerTimestamp = 0;
 
 export function initState() {
+
   gameStart = 0;
   firstServerTimestamp = 0;
   document.getElementById("hud").innerHTML = constants.PLAYER_CLIP_SIZE;
 }
 
 export function processGameUpdate(update) {
+
   if (!firstServerTimestamp) {
     firstServerTimestamp = update.t;
     gameStart = Date.now();
   }
+
   gameUpdates.push(update);
 
   updateLeaderboard(update.leaderboard);
@@ -40,6 +43,7 @@ function currentServerTime() {
 // Returns the index of the base update, the first game update before
 // current server time, or -1 if N/A.
 function getBaseUpdate() {
+
   const serverTime = currentServerTime();
   for (let i = gameUpdates.length - 1; i >= 0; i--) {
     if (gameUpdates[i].t <= serverTime) {
@@ -51,7 +55,8 @@ function getBaseUpdate() {
 
 // Returns { me, others, bullets }
 export function getCurrentState() {
-  if (!firstServerTimestamp) {
+
+  if (!firstServerTimestamp) { 
     return {};
   }
 
@@ -61,11 +66,15 @@ export function getCurrentState() {
   // If base is the most recent update we have, use its state.
   // Otherwise, interpolate between its state and the state of (base + 1).
   if (base < 0 || base === gameUpdates.length - 1) {
+
     return gameUpdates[gameUpdates.length - 1];
+  
   } else {
+
     const baseUpdate = gameUpdates[base];
     const next = gameUpdates[base + 1];
     const ratio = (serverTime - baseUpdate.t) / (next.t - baseUpdate.t);
+
     return {
       me: interpolateObject(baseUpdate.me, next.me, ratio),
       others: interpolateObjectArray(baseUpdate.others, next.others, ratio),
@@ -75,17 +84,25 @@ export function getCurrentState() {
 }
 
 function interpolateObject(object1, object2, ratio) {
+
   if (!object2) {
     return object1;
   }
 
   const interpolated = {};
+
   Object.keys(object1).forEach(key => {
+    
+
     if (key === 'direction') {
       interpolated[key] = interpolateDirection(object1[key], object2[key], ratio);
-    } else {
+    }
+    
+    else if (key !== 'clip' && key !== 'id' && key !== 'username') {
+
       interpolated[key] = object1[key] + (object2[key] - object1[key]) * ratio;
     }
+    else interpolated[key] = object1[key];
   });
   return interpolated;
 }
