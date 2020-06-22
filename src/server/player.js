@@ -7,9 +7,12 @@ class Player extends ObjectClass {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.score = 0;
-    this.mDirection = -10;
+    this.mDirection = 0;
+    this.pmDirection = -10;
     this.shoot = false;
     this.reload = false;
+    this.hoverControl = 10;
+    this.hoverSpeed = 0;
 
     this.maxHealth = Constants.PLAYER_MAX_HP;
     this.tankSize = Constants.PLAYER_RADIUS;
@@ -28,6 +31,13 @@ class Player extends ObjectClass {
     this.bulletRange = Constants.BULLET_RANGE;
     this.visionRange = Constants.PLAYER_VISION;
     this.healthRegen = Constants.PLAYER_HEALTH_REGEN;
+    this.turnRate = Constants.PLAYER_TURN_RATE;
+    this.firingArc = Constants.PLAYER_FIRE_ARC;
+    this.mode = Constants.PLAYER_MODE;
+    this.sideFan = Constants.PLAYER_SIDE_FAN;
+    this.backFan = Constants.PLAYER_BACK_FAN;
+    this.sideFanCost = Constants.PLAYER_SIDE_FAN_COST;
+    this.backFanCost = Constants.PLAYER_BACK_FAN_COST;
 
     this.firingCooldown = this.firingTime;
     this.reloadProgress = this.reloadTime;
@@ -39,17 +49,21 @@ class Player extends ObjectClass {
   // Returns a newly created bullet, or null.
   update(dt) {
 
-      // Update score
+
+    // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
     
     this.hp = Math.min(this.maxHealth, this.hp + this.healthRegen);
     this.energy = Math.min(this.maxEnergy, this.energy + this.energyRegen);
+    
+    if(this.mode == 0) {
+      
+      this.standardMovement(dt);
+    }
 
-    if(this.mDirection != -10) {
+    else if(this.mode == 1 || this.mode == 2){
 
-      this.energy -= this.speedCost;
-      this.x += dt * this.speed * Math.sin(this.mDirection);
-      this.y -= dt * this.speed * Math.cos(this.mDirection);
+      this.hoverMovement(dt);
     }
 
     // Make sure the player stays in bounds
@@ -60,7 +74,6 @@ class Player extends ObjectClass {
     // Fire a bullet, if needed
     if (this.firingCooldown <= 0 && this.shoot && this.energy >= this.firingCost && this.clip > 0) {
       
-
       this.firingCooldown = this.firingTime;
       this.energy -= this.firingCost;
       this.clip -= 1;
@@ -86,22 +99,143 @@ class Player extends ObjectClass {
     return null;
   }
 
+  standardMovement(dt) {    
+    
+    if(this.pmDirection != this.mDirection && this.pmDirection != -10) {
+
+
+      var diff = this.pmDirection - this.mDirection;
+      
+      if(diff > Math.PI) {
+
+        diff = -2 * Math.PI + diff;
+      }
+      
+      else if(diff <= -Math.PI) {
+
+        diff = 2 * Math.PI + diff;
+      }
+
+
+      if(Math.abs(diff) < Math.PI * this.turnRate) {
+
+        this.mDirection = this.pmDirection;
+      }
+
+      else if(diff > 0){
+
+        this.mDirection += Math.PI * this.turnRate;
+
+        if(this.mDirection > Math.PI) {
+
+          diff = -2 * Math.PI + this.mDirection;
+        }
+      }
+
+      else {
+
+        this.mDirection -= Math.PI * this.turnRate;
+
+        if(this.mDirection <= -Math.PI) {
+
+          this.mDirection = 2 * Math.PI + this.mDirection;
+        }
+      }
+
+    }
+
+    if(this.pmDirection != -10) {
+
+      this.energy -= this.speedCost;
+      this.x += dt * this.speed * Math.sin(this.mDirection);
+      this.y -= dt * this.speed * Math.cos(this.mDirection);
+    }
+  }
+
+  hoverMovement(dt) {
+    
+
+    this.hoverSpeed = 0;
+    var moveCost = 0;
+
+    switch(this.hoverControl) {
+
+      case 20:
+        this.mDirection += Math.PI * this.turnRate;
+        this.hoverSpeed = this.sideFan;
+        moveCost = this.sideFanCost;
+        break;
+      case 30:
+        this.mDirection -= Math.PI * this.turnRate;
+        this.hoverSpeed = this.sideFan;
+        moveCost = this.sideFanCost;
+        break;
+      case 40:
+        this.hoverSpeed = 2 * this.sideFan;
+        moveCost = 2 * this.sideFanCost;
+        break;
+      case 50:
+        this.hoverSpeed = this.backFan;
+        moveCost = this.backFanCost;
+        break;
+      case 60:
+        this.mDirection += Math.PI * this.turnRate;
+        this.hoverSpeed = this.backFan + this.sideFan;
+        moveCost = this.sideFanCost + this.backFanCost;
+        break;
+      case 70:
+        this.mDirection -= Math.PI * this.turnRate;
+        this.hoverSpeed = this.backFan + this.sideFan;
+        moveCost = this.sideFanCost + this.backFanCost;
+        break;
+      case 80:
+        this.hoverSpeed = this.backFan + 2 * this.sideFan;
+        moveCost = 2 * this.sideFanCost + this.backFanCost;
+        break;
+      case 10:
+      default:
+        return;
+    }
+    
+    this.energy -= moveCost;
+    console.log(this.hoverControl);
+    this.x += dt * this.hoverSpeed * Math.sin(this.mDirection);
+    this.y -= dt * this.hoverSpeed * Math.cos(this.mDirection);
+  }
+
   setShoot(s) {
     this.shoot = s;
   }
 
   takeBulletDamage(d) {
+
     this.hp -= d;
   }
 
   onDealtDamage() {
+
     this.score += Constants.SCORE_BULLET_HIT;
+  }
+
+  setDirection(dir) {
+
+    this.direction = dir;
   }
 
   setMoveDirection(mDir) {
 
-    this.mDirection = mDir;
+
+    if(mDir < 10 && this.mode == 0) {
+      
+      this.pmDirection = mDir;
+    }
+
+    else if(mDir >= 10 && (this.mode == 1 || this.mode == 2)) {
+      console.log("Catch! " + mDir);
+      this.hoverControl = mDir
+    }
   }
+
   changeStats(values) {
     
     this.maxHealth = values[0];
@@ -123,6 +257,13 @@ class Player extends ObjectClass {
     this.bulletRange = values[14];
     this.visionRange = values[15];
     this.healthRegen = values[16];
+    this.turnRate = values[17];
+    this.firingArc = values[18];
+    this.mode = values[19];
+    this.sideFan = values[20];
+    this.backFan = values[21];
+    this.sideFanCost = values[22];
+    this.backFanCost = values[23];
   }
 
   reload(){
@@ -135,6 +276,7 @@ class Player extends ObjectClass {
     return {
       ...(super.serializeForUpdate()),
       direction: this.direction,
+      mDirection: this.mDirection,
       hp: this.hp,
       energy: this.energy,
       maxHealth: this.maxHealth,
@@ -143,6 +285,7 @@ class Player extends ObjectClass {
       visionRange: this.visionRange,
       clip: this.clip,
       username: this.username,
+      mode: this.mode,
     };
   }
 }

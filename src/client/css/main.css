@@ -58,7 +58,7 @@ input[type="range"].stat{
 
 }
 input[type="text"].stat{
-  width: 80px;
+  width: 70px;
   height: 20px;
   display: inline-block;
   position: absolute;
@@ -215,6 +215,7 @@ how to remove the virtical space around the range input in IE*/
   border-radius: 5px;
   width: 350px;
   height: 450px;
+  overflow: scroll;
 }
 
 #hud {

@@ -27,11 +27,11 @@
       <br />
       Like, all of them.
       <br />
-      The original dev had no taste in controls or color schemes
+      Licensing information:
       <br />
-      But also, he literally made the code I'm modifying, so I probably should link the tutorial
+      
       <br />
-      <a href="https://victorzhou.com/blog/build-an-io-game-part-1/" target="_blank">Credit goes here</a>
+      Big Help: <a href="https://victorzhou.com/blog/build-an-io-game-part-1/" target="_blank">Credit goes here</a>
     </p>
     <hr />
     <p>
@@ -58,7 +58,7 @@
   <div id="hud" class="hidden">
     If you are seeing this, please find a way to replicate the process to do so and tell the devs. Now.
   </div>
-  <div id="dev" class="hidden">  
+  <div id="dev" class="hidden" >  
     <div class = "stat"><p class="stat">Max Health</p></div>
     <input id="healthR" class = "stat" type="range" min="1" max="400">
     <input id="healthT" type="text" class = "stat" maxlength="6">
@@ -141,6 +141,34 @@
     <div class = "stat"><p class="stat">Health Regen</p></div>
     <input id="regenR" class = "stat" type="range" min="0" max="50" step = "0.01">
     <input id="regenT" class = "stat" type="text" maxlength="6">
+
+    <div class = "stat"><p class="stat">Turn Rate</p></div>
+    <input id="turnRateR" class = "stat" type="range" min="0" max="1" step = "0.001">
+    <input id="turnRateT" class = "stat" type="text" maxlength="6">
+
+    <div class = "stat"><p class="stat">Firing Arc</p></div>
+    <input id="firingArcR" class = "stat" type="range" min="0" max="180" step = "1">
+    <input id="firingArcT" class = "stat" type="text" maxlength="3">
+
+    <div class = "stat"><p class="stat">Mode</p></div>
+    <input id="modeR" class = "stat" type="range" min="0" max="1" step = "1">
+    <input id="modeT" class = "stat" type="text" maxlength="1">
+
+    <div class = "stat"><p class="stat">Side Fan Strength</p></div>
+    <input id="sideFanR" class = "stat" type="range" min="0" max="400" step = "1">
+    <input id="sideFanT" class = "stat" type="text" maxlength="3">
+
+    <div class = "stat"><p class="stat">Back Fan Strength</p></div>
+    <input id="backFanR" class = "stat" type="range" min="0" max="800" step = "1">
+    <input id="backFanT" class = "stat" type="text" maxlength="3">
+
+    <div class = "stat"><p class="stat">Side Fan Cost</p></div>
+    <input id="sideFanCostR" class = "stat" type="range" min="0" max="50" step = "0.01">
+    <input id="sideFanCostT" class = "stat" type="text" maxlength="5">
+
+    <div class = "stat"><p class="stat">Back Fan Cost</p></div>
+    <input id="backFanCostR" class = "stat" type="range" min="0" max="100" step = "0.01">
+    <input id="backFanCostT" class = "stat" type="text" maxlength="6">
   </div>
 
   <div id="disconnect-modal" class="hidden">

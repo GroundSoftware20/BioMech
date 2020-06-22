@@ -45,18 +45,22 @@ io.on('connection', socket => {
 const game = new Game();
 
 function joinGame(username) {
+
   game.addPlayer(this, username);
 }
 
 function handleInput(dir, eType) {
+
   game.handleInput(this, dir, eType);
 }
 
 function handlePoint(dir) {
+
   game.handlePoint(this, dir);
 }
 
 function handleMove(mDir) {
+
   game.handleMove(this, mDir);
 }
 
@@ -64,10 +68,13 @@ function handleStats(values) {
 
   game.handleStats(this, values);
 }
+
 function handleReload() {
+
   game.handleReload(this);
 }
 
 function onDisconnect() {
+
   game.removePlayer(this);
 }

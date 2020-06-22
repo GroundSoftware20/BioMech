@@ -6,7 +6,7 @@ const Constants = require('../shared/constants');
 var editMode = false;
 //up, down, left, right
 var log = [false,false,false,false];
-var elements = ["health", "tankSize", "tankSpeed", "energyCap", "energyRegen", "speedCost", "fireCost", "reloadCost", "bulletDam", "bulletSpeed", "bulletSize", "firingRate", "clipSize", "reloadRate", "bulletRange", "vision", "regen"];
+var elements = ["health", "tankSize", "tankSpeed", "energyCap", "energyRegen", "speedCost", "fireCost", "reloadCost", "bulletDam", "bulletSpeed", "bulletSize", "firingRate", "clipSize", "reloadRate", "bulletRange", "vision", "regen", "turnRate", "firingArc", "mode", "sideFan", "backFan", "sideFanCost", "backFanCost"];
 //remember to change both html and javascript
 var values = [Constants.PLAYER_MAX_HP, 
               Constants.PLAYER_RADIUS, 
@@ -24,39 +24,19 @@ var values = [Constants.PLAYER_MAX_HP,
               Constants.PLAYER_RELOAD_TIME, 
               Constants.BULLET_RANGE, 
               Constants.PLAYER_VISION, 
-              Constants.PLAYER_HEALTH_REGEN];
+              Constants.PLAYER_HEALTH_REGEN,
+              Constants.PLAYER_TURN_RATE,
+              Constants.PLAYER_FIRE_ARC,
+              Constants.PLAYER_MODE,
+              Constants.PLAYER_SIDE_FAN,
+              Constants.PLAYER_BACK_FAN,
+              Constants.PLAYER_SIDE_FAN_COST,
+              Constants.PLAYER_BACK_FAN_COST];
 
-function onKeyInput(e) {
+function standardMovement() {
 
-  /*   left  += -1 
-    *   right +=  1
-    *   up    +=  3
-    *   down  += -3
-    *   0: no movement
-    *   1: move right
-    *   2: move up and left
-    *   3: move up
-    *   4: move up and right
-    *  -1: move left
-    *  -2: move down and right
-    *  -3: move down
-    *  -4: move down and left
-    */
-     
-  if(e.key == "w" || e.key == "W")
-    log[0] = true;
-
-  if(e.key == "s" || e.key == "S")
-    log[1] = true;
-
-  if(e.key == "a" || e.key == "A")
-    log[2] = true;
-
-  if(e.key == "d" || e.key == "D")
-    log[3] = true;
-  
   let moveDir = 0;
-  
+
   if(log[0] == true) {
 
     moveDir += 3;
@@ -80,7 +60,7 @@ function onKeyInput(e) {
 
   switch(moveDir) {
     case 1:
-      updateMoveDir(-1 * Math.PI/2);
+      updateMoveDir(-Math.PI/2);
       break;
     case 2:
       updateMoveDir(Math.PI/4);
@@ -89,7 +69,7 @@ function onKeyInput(e) {
       updateMoveDir(0);
       break;
     case 4:
-      updateMoveDir(-1 * Math.PI / 4);
+      updateMoveDir(-Math.PI / 4);
       break;
     case -1:
       updateMoveDir(Math.PI / 2);
@@ -98,7 +78,7 @@ function onKeyInput(e) {
       updateMoveDir(-3 * Math.PI / 4);
       break;
     case -3:
-      updateMoveDir(-1 * Math.PI);
+      updateMoveDir(Math.PI);
       break;
     case -4:
       updateMoveDir(3 * Math.PI / 4);
@@ -106,6 +86,73 @@ function onKeyInput(e) {
     default:
       updateMoveDir(-10);
       break;
+  }
+}
+
+function hoverMovement() {
+
+  let moveDir = 0;
+
+  if(log[1] == true) {
+
+    moveDir += 4;
+  }
+
+  if(log[2] == true) {
+
+    moveDir += 1;
+  }
+
+  if(log[3] == true) {
+
+    moveDir += 2;
+  }
+
+  if(log[0] == true) {
+
+    moveDir = 7;
+  }
+  console.log("Here!");
+  updateMoveDir(10 * (moveDir + 1))
+  
+}
+
+function onKeyInput(e) {
+
+  /*   left  += -1 
+    *   right +=  1
+    *   up    +=  3
+    *   down  += -3
+    *   0: no movement
+    *   1: move right
+    *   2: move up and left
+    *   3: move up
+    *   4: move up and right
+    *  -1: move left
+    *  -2: move down and right
+    *  -3: move down
+    *  -4: move down and left
+    */
+  if(e.key == "w" || e.key == "W")
+    log[0] = true;
+
+  if(e.key == "s" || e.key == "S")
+    log[1] = true;
+
+  if(e.key == "a" || e.key == "A")
+    log[2] = true;
+
+  if(e.key == "d" || e.key == "D")
+    log[3] = true;
+  
+  if(values[Constants.M] == 0) {
+
+    standardMovement();
+  }
+
+  else if(values[Constants.M] == 1) {
+
+    hoverMovement();
   }
 
 }
@@ -116,15 +163,18 @@ function onKeyLift(e) {
     
     editMode = !editMode;
 
-    if(document.getElementById('dev').classList.contains('hidden'))
+    if(document.getElementById('dev').classList.contains('hidden')) {
+
       document.getElementById('dev').classList.remove('hidden');
-    
+    }
+
     else document.getElementById('dev').classList.add('hidden');
   }
 
   else if(e.key == "Enter") {
     console.log(values);
-    for(let i = 0; i < values.length; i++) 
+    for(let i = 0; i < values.length; i++) {
+
       if(i != Constants.NRGR && i != Constants.HR && (!(Number(values[i]) === values[i]) || values[i] < 0)) {
 
         document.getElementById("dev").style.backgroundColor = "brown";
@@ -132,6 +182,8 @@ function onKeyLift(e) {
         console.log(i + " should not be " + values[i]);
         return;
       }
+    }
+
     if(values[Constants.CS] < 1 || values[Constants.V] < 1 || values[Constants.CS] % 1 != 0 || values[Constants.V] % 1 != 0) {
 
       document.getElementById("dev").style.backgroundColor = "brown";
@@ -145,24 +197,27 @@ function onKeyLift(e) {
     return;
   }
 
-  else if(e.key == "r" || e.key == "R")
+  else if(e.key == "r" || e.key == "R") {
+
     reload();
+  }
   
   else if(e.key == "f" || e.key == "F"){
+
       for(let i = 0; i < log.length; i++)
         log[i] = false;
     
       updateMoveDir(-10);
       return;
   }
-  else {
 
-    let moveDir = 0;
+  else {
 
     if(e.key == "w" || e.key == "W") {
 
       log[0] = false;
     }
+
     if(e.key == "s" || e.key == "S") {
 
       log[1] = false;
@@ -178,55 +233,14 @@ function onKeyLift(e) {
       log[3] = false;
     }
 
-    if(log[0] == true) {
+    if(values[Constants.M] == 0) {
 
-      moveDir += 3;
+      standardMovement();
     }
   
-    if(log[1] == true) {
+    else if(values[Constants.M] == 1) {
   
-      moveDir -= 3;
-    }
-  
-    if(log[2] == true) {
-  
-      moveDir += 1;
-    }
-  
-    if(log[3] == true) {
-  
-      moveDir -= 1;
-    }
-  
-
-    switch(moveDir) {
-      case 1:
-        updateMoveDir(-1 * Math.PI/2);
-        break;
-      case 2:
-        updateMoveDir(Math.PI/4);
-        break;
-      case 3:
-        updateMoveDir(0);
-        break;
-      case 4:
-        updateMoveDir(-1 * Math.PI / 4);
-        break;
-      case -1:
-        updateMoveDir(Math.PI / 2);
-        break;
-      case -2:
-        updateMoveDir(-3 * Math.PI / 4);
-        break;
-      case -3:
-        updateMoveDir(-1 * Math.PI);
-        break;
-      case -4:
-        updateMoveDir(3 * Math.PI / 4);
-        break;
-      default:
-        updateMoveDir(-10);
-        break;
+      hoverMovement();
     }
   }
 }
@@ -316,6 +330,10 @@ export function startCapturingInput() {
 }
 
 export function stopCapturingInput() {
+
+  for(var i = 0; i < log.length; i++)
+    log[i] = false;
+
   window.removeEventListener('mousemove', onPMouseInput);
   window.removeEventListener('mouseup', onMouseInput);
   window.removeEventListener('mousedown', onMouseInput);

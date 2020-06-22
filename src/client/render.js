@@ -103,7 +103,17 @@ function renderPlayer(me, player) {
   // Draw ship
   context.save();
   context.translate(canvasX, canvasY);
-  context.rotate(direction);
+
+  if(player.mode == 0) {
+    
+    context.rotate(direction);
+  }
+
+  else if(player.mode == 1 || player.mode == 1 ){
+
+    context.rotate(player.mDirection);
+  }
+
   context.drawImage(
     getAsset('ship.png'),
     -player.tankSize,
