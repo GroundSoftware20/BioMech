@@ -46,6 +46,8 @@ div.stat{
   position: relative;
   top: +20px;
 }
+
+
 input[type="range"].stat{
     position: absolute;
     left: 100px;
@@ -218,6 +220,22 @@ how to remove the virtical space around the range input in IE*/
   overflow: scroll;
 }
 
+#sett {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+  width: 250px;
+  height: 150px;
+  overflow: scroll;
+}
+
+label.option {
+
+  font-size: 20;
+}
 #hud {
   position: fixed;
   left: 10px;

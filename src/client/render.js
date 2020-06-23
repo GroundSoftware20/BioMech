@@ -109,7 +109,7 @@ function renderPlayer(me, player) {
     context.rotate(direction);
   }
 
-  else if(player.mode == 1 || player.mode == 1 ){
+  else if(player.mode == 1){
 
     context.rotate(player.mDirection);
   }
@@ -154,12 +154,12 @@ function renderPlayer(me, player) {
     PLAYER_RADIUS * 2 * (1 - player.energy / player.maxEnergy),
     2,
   );
-  //if(player != me) {
+  if(player != me && !document.getElementById("hideNames").checked) {
     context.fillStyle = "steelblue";
     context.font = "30px Ariel";
     context.fillText(player.username, canvasX - context.measureText(player.username).width / 2, 
-                    canvasY + player.tankSize + 48);
-  //}
+                    canvasY + player.tankSize + 36);
+  }
     
 }
 

@@ -1,6 +1,7 @@
 const ObjectClass = require('./object');
 const Bullet = require('./bullet');
 const Constants = require('../shared/constants');
+const { pick } = require('lodash');
 
 class Player extends ObjectClass {
   constructor(id, username, x, y) {
@@ -61,7 +62,7 @@ class Player extends ObjectClass {
       this.standardMovement(dt);
     }
 
-    else if(this.mode == 1 || this.mode == 2){
+    else if(this.mode == 1){
 
       this.hoverMovement(dt);
     }
@@ -189,16 +190,31 @@ class Player extends ObjectClass {
         moveCost = this.sideFanCost + this.backFanCost;
         break;
       case 80:
-        this.hoverSpeed = this.backFan + 2 * this.sideFan;
-        moveCost = 2 * this.sideFanCost + this.backFanCost;
+
+        moveCost = 2 * (2 * this.sideFanCost + this.backFanCost);
+
+        if(moveCost < this.energy) {
+
+          this.hoverSpeed = this.backFan + 2 * this.sideFan;
+        }
+
+        else {
+
+          moveCost = this.energy;
+          this.hoverSpeed = this.backFan + this.sideFan;
+        }
+
         break;
+      case 90:
+        this.hoverSpeed = this.backFan + this.sideFan;
+        moveCost = this.sideFanCost + this.backFanCost;
+          break;
       case 10:
       default:
         return;
     }
     
     this.energy -= moveCost;
-    console.log(this.hoverControl);
     this.x += dt * this.hoverSpeed * Math.sin(this.mDirection);
     this.y -= dt * this.hoverSpeed * Math.cos(this.mDirection);
   }
@@ -218,8 +234,37 @@ class Player extends ObjectClass {
   }
 
   setDirection(dir) {
+    
+    var diff = this.direction - dir;
+    
+    if(diff > Math.PI) {
 
-    this.direction = dir;
+      diff -= 2 * Math.PI;
+    }
+
+    if(diff < Math.PI) {
+
+      diff += 2 * Math.PI;
+    }
+
+    if(Math.abs(diff) < this.firingArc * Math.PI / 180) {
+    
+      this.direction = dir;
+    }
+
+    else if(diff < 0) {
+      
+      this.direction -= this.firingArc * Math.PI / 180;
+      if(this.direction < -Math.PI)
+      this.direction += 2 * this.direction;
+    }
+
+    else {
+      
+      this.direction += this.firingArc * Math.PI / 180;
+      if(this.direction > Math.PI)
+      this.direction -= 2 * this.direction;
+    }
   }
 
   setMoveDirection(mDir) {
@@ -230,20 +275,30 @@ class Player extends ObjectClass {
       this.pmDirection = mDir;
     }
 
-    else if(mDir >= 10 && (this.mode == 1 || this.mode == 2)) {
-      console.log("Catch! " + mDir);
+    else if(mDir >= 10 && this.mode == 1) {
+      
       this.hoverControl = mDir
     }
   }
 
   changeStats(values) {
     
+    if(this.hp == this.maxHealth) {
+
+      this.maxHealth = values[0];
+      this.hp = values[0]
+    }
+
+    if(this.energy == this.maxEnergy) {
+
+      this.maxEnergy = values[3];
+      this.energy = values[3];
+    }
+
     this.maxHealth = values[0];
-    this.hp = values[0]
     this.tankSize = values[1];
     this.speed = values[2];
     this.maxEnergy = values[3];
-    this.energy = values[3];
     this.energyRegen = values[4];
     this.speedCost = values[5];
     this.firingCost = values[6];

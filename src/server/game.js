@@ -15,7 +15,7 @@ class Game {
 
   addPlayer(socket, username) {
 
-    if(username.substring(0,4) != "coin")
+    if(username.substring(0,4) != "nero")
       return false;
     
     else {
@@ -58,14 +58,17 @@ class Game {
     if (this.players[socket.id])
       this.players[socket.id].setMoveDirection(dir);
   }
+  
   handleStats(socket, values) {
 
-    this.players[socket.id].changeStats(values)
+    if (this.players[socket.id])
+      this.players[socket.id].changeStats(values)
   }
 
   handleReload(socket) {
 
-    this.players[socket.id].reload = true;
+    if (this.players[socket.id])
+      this.players[socket.id].reload = true;
   }
 
   update() {
@@ -106,6 +109,7 @@ class Game {
     Object.keys(this.sockets).forEach(playerID => {
       const socket = this.sockets[playerID];
       const player = this.players[playerID];
+      
       if (player.hp <= 0) {
         socket.emit(Constants.MSG_TYPES.GAME_OVER);
         this.removePlayer(socket);
