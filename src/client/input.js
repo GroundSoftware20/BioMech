@@ -164,7 +164,7 @@ function onKeyInput(e) {
     standardMovement();
   }
 
-  else if (values[Constants.M] == 1) {
+  else if (values[Constants.M] == 1 || values[Constants.M] == 2) {
 
     hoverMovement();
   }
@@ -220,7 +220,7 @@ function onKeyLift(e) {
           standardMovement();
         }
 
-        else if (values[Constants.M] == 1) {
+        else if (values[Constants.M] == 1 || values[Constants.M] == 2) {
 
           hoverMovement();
         }

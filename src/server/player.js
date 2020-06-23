@@ -62,7 +62,7 @@ class Player extends ObjectClass {
       this.standardMovement(dt);
     }
 
-    else if(this.mode == 1){
+    else if(this.mode == 1 || this.mode == 2){
 
       this.hoverMovement(dt);
     }
@@ -159,50 +159,58 @@ class Player extends ObjectClass {
 
     this.hoverSpeed = 0;
     var moveCost = 0;
+    var turnMult = 1;
+
+    if(this.mode == 1) {
+
+      turnMult = -1;
+    }
+
+    console.log(turnMult);
 
     switch(this.hoverControl) {
 
       case 20:
-        this.mDirection += Math.PI * this.turnRate;
-        this.hoverSpeed = this.sideFan;
+        this.mDirection -= turnMult * Math.PI * this.turnRate;
+        this.hoverSpeed = -turnMult * this.sideFan;
         moveCost = this.sideFanCost;
         break;
       case 30:
-        this.mDirection -= Math.PI * this.turnRate;
-        this.hoverSpeed = this.sideFan;
+        this.mDirection += turnMult * Math.PI * this.turnRate;
+        this.hoverSpeed = -turnMult * this.sideFan;
         moveCost = this.sideFanCost;
         break;
       case 40:
         this.hoverSpeed = 2 * this.sideFan;
-        moveCost = 2 * this.sideFanCost;
+        moveCost = -2 * turnMult * this.sideFanCost;
         break;
       case 50:
         this.hoverSpeed = this.backFan;
         moveCost = this.backFanCost;
         break;
       case 60:
-        this.mDirection += Math.PI * this.turnRate;
-        this.hoverSpeed = this.backFan + this.sideFan;
+        this.mDirection -= turnMult * Math.PI * this.turnRate;
+        this.hoverSpeed = this.backFan + turnMult * this.sideFan;;
         moveCost = this.sideFanCost + this.backFanCost;
         break;
       case 70:
-        this.mDirection -= Math.PI * this.turnRate;
-        this.hoverSpeed = this.backFan + this.sideFan;
+        this.mDirection += turnMult * Math.PI * this.turnRate;
+        this.hoverSpeed = this.backFan + turnMult * this.sideFan;;
         moveCost = this.sideFanCost + this.backFanCost;
         break;
       case 80:
 
-        moveCost = 2 * (2 * this.sideFanCost + this.backFanCost);
+        moveCost = 2 * (-2 * turnMult * this.sideFanCost + this.backFanCost);
 
         if(moveCost < this.energy) {
 
-          this.hoverSpeed = this.backFan + 2 * this.sideFan;
+          this.hoverSpeed = this.backFan - 2 * this.sideFan;
         }
 
         else {
 
           moveCost = this.energy;
-          this.hoverSpeed = this.backFan + this.sideFan;
+          this.hoverSpeed = this.backFan;
         }
 
         break;
@@ -297,8 +305,8 @@ class Player extends ObjectClass {
       this.pmDirection = mDir;
     }
 
-    else if(mDir >= 10 && this.mode == 1) {
-      
+    else if(mDir >= 10 && (this.mode == 1 || this.mode == 2)) {
+      console.log("change");
       this.hoverControl = mDir
     }
   }

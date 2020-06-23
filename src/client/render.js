@@ -110,7 +110,7 @@ function renderPlayer(me, player) {
     pic = "ship.png"
   }
 
-  else if(player.mode == 1){
+  else if(player.mode == 1 || player.mode == 2){
 
     context.rotate(player.mDirection);
   }
