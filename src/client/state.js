@@ -94,7 +94,7 @@ function interpolateObject(object1, object2, ratio) {
   Object.keys(object1).forEach(key => {
     
 
-    if (key === 'direction') {
+    if (key === 'direction' || key === 'mDirection') {
       interpolated[key] = interpolateDirection(object1[key], object2[key], ratio);
     }
     
@@ -115,15 +115,23 @@ function interpolateObjectArray(objects1, objects2, ratio) {
 // For example, when rotating from -3 radians to +3 radians, we should really rotate from
 // -3 radians to +3 - 2pi radians.
 function interpolateDirection(d1, d2, ratio) {
+
   const absD = Math.abs(d2 - d1);
+
   if (absD >= Math.PI) {
+
     // The angle between the directions is large - we should rotate the other way
     if (d1 > d2) {
+
       return d1 + (d2 + 2 * Math.PI - d1) * ratio;
+
     } else {
+
       return d1 - (d2 - 2 * Math.PI - d1) * ratio;
     }
+
   } else {
+
     // Normal interp
     return d1 + (d2 - d1) * ratio;
   }

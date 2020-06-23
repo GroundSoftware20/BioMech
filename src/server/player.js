@@ -10,6 +10,7 @@ class Player extends ObjectClass {
     this.score = 0;
     this.mDirection = 0;
     this.pmDirection = -10;
+    this.dpDirection = this.direction;
     this.shoot = false;
     this.reload = false;
     this.hoverControl = 10;
@@ -50,7 +51,6 @@ class Player extends ObjectClass {
   // Returns a newly created bullet, or null.
   update(dt) {
 
-
     // Update score
     this.score += dt * Constants.SCORE_PER_SECOND;
     
@@ -74,7 +74,7 @@ class Player extends ObjectClass {
     this.firingCooldown -= dt;
     // Fire a bullet, if needed
     if (this.firingCooldown <= 0 && this.shoot && this.energy >= this.firingCost && this.clip > 0) {
-      
+
       this.firingCooldown = this.firingTime;
       this.energy -= this.firingCost;
       this.clip -= 1;
@@ -147,6 +147,7 @@ class Player extends ObjectClass {
 
     if(this.pmDirection != -10) {
 
+      this.setDirection(this.dpDirection)
       this.energy -= this.speedCost;
       this.x += dt * this.speed * Math.sin(this.mDirection);
       this.y -= dt * this.speed * Math.cos(this.mDirection);
@@ -214,12 +215,25 @@ class Player extends ObjectClass {
         return;
     }
     
+    if(this.mDirection > Math.PI) {
+
+      this.mDirection -= 2 * Math.PI;
+    }
+
+    else if(this.mDirection <= -Math.PI) {
+
+      this.mDirection += 2 * Math.PI;
+    }
+
+    this.setDirection(this.dpDirection);
+
     this.energy -= moveCost;
     this.x += dt * this.hoverSpeed * Math.sin(this.mDirection);
     this.y -= dt * this.hoverSpeed * Math.cos(this.mDirection);
   }
 
   setShoot(s) {
+
     this.shoot = s;
   }
 
@@ -234,36 +248,44 @@ class Player extends ObjectClass {
   }
 
   setDirection(dir) {
-    
-    var diff = this.direction - dir;
-    
+
+    this.dpDirection = dir;
+    var diff = dir - this.mDirection;
+
     if(diff > Math.PI) {
 
       diff -= 2 * Math.PI;
     }
 
-    if(diff < Math.PI) {
+    if(diff <= -Math.PI) {
 
       diff += 2 * Math.PI;
     }
 
-    if(Math.abs(diff) < this.firingArc * Math.PI / 180) {
+
+    if(Math.abs(diff) < this.firingArc * Math.PI) {
     
       this.direction = dir;
     }
 
     else if(diff < 0) {
       
-      this.direction -= this.firingArc * Math.PI / 180;
-      if(this.direction < -Math.PI)
-      this.direction += 2 * this.direction;
+      this.direction = this.mDirection - this.firingArc * Math.PI;
+
+      if(this.direction <= -Math.PI) {
+
+        this.direction += 2 * Math.PI;
+      }
     }
 
     else {
       
-      this.direction += this.firingArc * Math.PI / 180;
-      if(this.direction > Math.PI)
-      this.direction -= 2 * this.direction;
+      this.direction = this.mDirection + this.firingArc * Math.PI;
+
+      if(this.direction > Math.PI) {
+
+        this.direction -= 2 * Math.PI;
+      }
     }
   }
 

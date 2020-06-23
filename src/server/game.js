@@ -35,22 +35,22 @@ class Game {
     delete this.players[socket.id];
   }
 
-  handleInput(socket, eType) {
+  handleInput(socket, dir, eType) {
 
     if (this.players[socket.id]) {
 
-      if(eType == 'mousedown')
-        this.players[socket.id].setShoot(true);
-    
-      else if(eType == 'mouseup')
-        this.players[socket.id].setShoot(false);
-    }
-  }
-
-  handlePoint(socket, dir) {
-
-    if (this.players[socket.id])
       this.players[socket.id].setDirection(dir);
+      console.log("gi" + eType);
+      if(eType == 'mousedown') {
+
+        this.players[socket.id].setShoot(true);
+      }
+
+      else if(eType == 'mouseup') {
+      
+        this.players[socket.id].setShoot(false);
+      }
+    }
   }
 
   handleMove(socket, dir) {

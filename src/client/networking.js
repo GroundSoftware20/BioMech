@@ -24,32 +24,39 @@ export const connect = onGameOver => (
       console.log('Disconnected from server.');
       document.getElementById('disconnect-modal').classList.remove('hidden');
       document.getElementById('reconnect-button').onclick = () => {
-        window.location.reload();
+      window.location.reload();
       };
     });
   })
 );
 
 export const play = username => {
+
   socket.emit(Constants.MSG_TYPES.JOIN_GAME, username);
 };
 
-export const updateDirection = throttle(20, (eType) => {
-  socket.emit(Constants.MSG_TYPES.INPUT, eType);
+export const updateDirection = throttle(20, (dir, eType) => {
+
+  socket.emit(Constants.MSG_TYPES.INPUT, dir, eType);
+});
+
+export const updatePDirection = throttle(20, (dir, eType) => {
+
+  socket.emit(Constants.MSG_TYPES.INPUT, dir, eType);
 });
 
 export const updateMoveDir = throttle(20, mDir => {
+
   socket.emit(Constants.MSG_TYPES.MOVE, mDir);
 });
 
-export const updatePDirection = throttle(20, dir => {
-  socket.emit(Constants.MSG_TYPES.POINT, dir);
-});
 
 export const updateStats = throttle(20, stats => {
+
   socket.emit(Constants.MSG_TYPES.STAT, stats);
 });
 
 export const reload = throttle(20, () => {
+
   socket.emit(Constants.MSG_TYPES.RELOAD);
 });

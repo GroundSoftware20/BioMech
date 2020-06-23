@@ -295,25 +295,36 @@ function onMouseInput(e) {
   
   else {
   
-    updateDirection(e.type);
+    updateDirection(Math.atan2(e.clientX - window.innerWidth / 2, window.innerHeight / 2 - e.clientY), e.type);
   }
 }
 
 function onPMouseInput(e) {
 
-  handlePInput(e.clientX, e.clientY);
+  if (!document.getElementById("dev").classList.contains("hidden")
+    && e.clientX < document.getElementById("dev").offsetWidth
+    && e.clientY < document.getElementById("dev").offsetHeight && e.type != "mouseup") {
+
+    return;
+  }
+
+  else if (!document.getElementById("sett").classList.contains("hidden") 
+    && e.clientX < document.getElementById("sett").offsetWidth
+    && e.clientY < document.getElementById("sett").offsetHeight && e.type != "mouseup") {
+  
+    return;
+  }
+  
+  else {
+  
+    updatePDirection(Math.atan2(e.clientX - window.innerWidth / 2, window.innerHeight / 2 - e.clientY), e.type);
+  }
 }
 
 function onTouchInput(e) {
 
   const touch = e.touches[0];
   handleInput(touch.clientX, touch.clientY, e.type);
-}
-
-function handlePInput(x, y) {
-
-  const dir = Math.atan2(x - window.innerWidth / 2, window.innerHeight / 2 - y);
-  updatePDirection(dir);
 }
 
 function addSliderFunc() {

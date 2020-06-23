@@ -99,7 +99,7 @@ function renderPlayer(me, player) {
   const { x, y, direction} = player;
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
-
+  var pic = "ship.png";
   // Draw ship
   context.save();
   context.translate(canvasX, canvasY);
@@ -107,15 +107,16 @@ function renderPlayer(me, player) {
   if(player.mode == 0) {
     
     context.rotate(direction);
+    pic = "ship.png"
   }
 
   else if(player.mode == 1){
 
     context.rotate(player.mDirection);
   }
-
+  
   context.drawImage(
-    getAsset('ship.png'),
+    getAsset(pic),
     -player.tankSize,
     -player.tankSize,
     player.tankSize * 2,
