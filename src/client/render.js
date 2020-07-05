@@ -96,10 +96,11 @@ function renderBackgroundA(x, y) {
 // Renders a ship at the given coordinates
 function renderPlayer(me, player) {
   
-  const { x, y, direction} = player;
+  const {x, y, direction} = player;
   const canvasX = canvas.width / 2 + x - me.x;
   const canvasY = canvas.height / 2 + y - me.y;
-  var pic = "ship.png";
+
+
   // Draw ship
   context.save();
   context.translate(canvasX, canvasY);
@@ -107,23 +108,49 @@ function renderPlayer(me, player) {
   if(player.mode == 0) {
     
     context.rotate(direction);
-    pic = "ship.png"
+    context.drawImage(
+      getAsset("ship.png"),
+      -player.tankSize,
+      -player.tankSize,
+      player.tankSize * 2,
+      player.tankSize * 2,
+    );
   }
 
-  else if(player.mode == 1 || player.mode == 2){
+  else if(player.mode == 1 || player.mode == 2 || player.mode == 3){
 
     context.rotate(player.mDirection);
+    context.drawImage(
+      getAsset("hoverBase001.png"),
+      -player.tankSize,
+      -player.tankSize,
+      player.tankSize * 2,
+      player.tankSize * 2,
+    );
+
+    context.rotate(player.direction - player.mDirection);
+    var up = 1;
+
+    if(Math.abs(player.direction - player.mDirection) > Math.PI / 2) {
+
+      up = -1
+    }
+
+    context.drawImage(
+      getAsset("hoverTurret001.png"), 
+      -player.tankSize - 50 * player.tankSize / 135 * Math.sin(player.direction - player.mDirection),
+      -player.tankSize  + 50 * player.tankSize / 135 * (1 - Math.cos(player.direction - player.mDirection)), //+ 50 * player.tankSize / 135 * (Math.sin(Math.PI / 2 - (player.direction - player.mDirection)) - 1),
+      // 
+      //-player.tankSize + 15 * player.tankSize / 135 * Math.cos(Math.PI / 2 + (player.direction - player.mDirection) / 2), 
+      //-player.tankSize + 15 * player.tankSize / 135 * (Math.sin(Math.PI / 2 + (player.direction - player.mDirection) / 2)),
+      // - 22 * player.tankSize / 135 * Math.cos(Math.PI / 2 + (player.direction - player.mDirection) / 2),
+      //-22 * player.tankSize / 135 * (Math.sin(Math.PI / 2 + (player.mDirection - player.direction) / 2) - 1),
+      player.tankSize * 2,
+      player.tankSize * 2,
+    );
+    context.restore();
   }
   
-  context.drawImage(
-    getAsset(pic),
-    -player.tankSize,
-    -player.tankSize,
-    player.tankSize * 2,
-    player.tankSize * 2,
-  );
-  context.restore();
-
   // Draw health bar
   context.fillStyle = 'red';
   context.fillRect(

@@ -13,8 +13,6 @@ class Player extends ObjectClass {
     this.dpDirection = this.direction;
     this.shoot = false;
     this.reload = false;
-    this.hoverControl = 10;
-    this.hoverSpeed = 0;
 
     this.maxHealth = Constants.PLAYER_MAX_HP;
     this.tankSize = Constants.PLAYER_RADIUS;
@@ -62,7 +60,7 @@ class Player extends ObjectClass {
       this.standardMovement(dt);
     }
 
-    else if(this.mode == 1 || this.mode == 2){
+    else if(this.mode == 1 || this.mode == 2 || this.mode == 3){
 
       this.hoverMovement(dt);
     }
@@ -155,73 +153,166 @@ class Player extends ObjectClass {
   }
 
   hoverMovement(dt) {
-    
 
-    this.hoverSpeed = 0;
     var moveCost = 0;
-    var turnMult = 1;
-
+    
     if(this.mode == 1) {
-
-      turnMult = -1;
-    }
-
-    console.log(turnMult);
-
-    switch(this.hoverControl) {
-
-      case 20:
-        this.mDirection -= turnMult * Math.PI * this.turnRate;
-        this.hoverSpeed = -turnMult * this.sideFan;
-        moveCost = this.sideFanCost;
-        break;
-      case 30:
-        this.mDirection += turnMult * Math.PI * this.turnRate;
-        this.hoverSpeed = -turnMult * this.sideFan;
-        moveCost = this.sideFanCost;
-        break;
-      case 40:
-        this.hoverSpeed = 2 * this.sideFan;
-        moveCost = -2 * turnMult * this.sideFanCost;
-        break;
-      case 50:
-        this.hoverSpeed = this.backFan;
-        moveCost = this.backFanCost;
-        break;
-      case 60:
-        this.mDirection -= turnMult * Math.PI * this.turnRate;
-        this.hoverSpeed = this.backFan + turnMult * this.sideFan;;
-        moveCost = this.sideFanCost + this.backFanCost;
-        break;
-      case 70:
-        this.mDirection += turnMult * Math.PI * this.turnRate;
-        this.hoverSpeed = this.backFan + turnMult * this.sideFan;;
-        moveCost = this.sideFanCost + this.backFanCost;
-        break;
-      case 80:
-
-        moveCost = 2 * (-2 * turnMult * this.sideFanCost + this.backFanCost);
-
-        if(moveCost < this.energy) {
-
-          this.hoverSpeed = this.backFan - 2 * this.sideFan;
-        }
-
-        else {
-
-          moveCost = this.energy;
-          this.hoverSpeed = this.backFan;
-        }
-
-        break;
-      case 90:
-        this.hoverSpeed = this.backFan + this.sideFan;
-        moveCost = this.sideFanCost + this.backFanCost;
+      switch(this.pmDirection) {
+        //up-111
+        case 0:
+          this.hoverSpeed = 2 * this.sideFan + this.backFan;
+          moveCost = this.backFanCost + 2 * this.sideFanCost;
           break;
-      case 10:
-      default:
-        return;
+        //down-010
+        case Math.PI:
+          this.hoverSpeed = this.backFan;
+          moveCost = this.backFanCost;
+          break;
+        //left-100
+        case -Math.PI / 2:
+          this.hoverSpeed = this.sideFan;
+          this.mDirection -= Math.PI * this.turnRate;
+          moveCost = this.sideFanCost;
+          break;
+        //right-001
+        case Math.PI / 2:
+          this.hoverSpeed = this.sideFan;
+          this.mDirection += Math.PI * this.turnRate;
+          moveCost = this.sideFanCost;
+          break;
+        //downleft-110
+        case -3 * Math.PI / 4:
+        //upleft-110
+        case -Math.PI / 4:
+          this.hoverSpeed = this.backFan + this.sideFan;
+          this.mDirection -= Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;
+          break;
+        //downright-011
+        case 3 * Math.PI / 4:
+        //upright-011
+        case Math.PI / 4:
+          this.hoverSpeed = this.backFan + this.sideFan;
+          this.mDirection += Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;
+          break;
+        case -10:
+        default:
+          return;
+      }
     }
+
+    else if(this.mode == 2) {
+      switch(this.pmDirection) {
+        //up-111
+        case 0:
+          this.hoverSpeed = 2 * this.sideFan + this.backFan;
+          moveCost = this.backFanCost + 2 * this.sideFanCost;
+          break;
+        //down-999
+        case Math.PI:
+          this.hoverSpeed = -2 * this.sideFan - this.backFan;
+          moveCost = this.backFanCost + 2 * this.sideFanCost;
+          break;
+        //left-900
+        case -Math.PI / 2:
+          this.hoverSpeed = -this.sideFan;
+          this.mDirection -= Math.PI * this.turnRate;
+          moveCost = this.sideFanCost;
+          break;
+        //right-009
+        case Math.PI / 2:
+          this.hoverSpeed = -this.sideFan;
+          this.mDirection += Math.PI * this.turnRate;
+          moveCost = this.sideFanCost;
+          break;
+        //upleft-910
+        case -Math.PI / 4:
+          this.hoverSpeed = this.backFan - this.sideFan;
+          this.mDirection -= Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;
+          break;
+        //upright-019
+        case Math.PI / 4:
+          this.hoverSpeed = this.backFan - this.sideFan;
+          this.mDirection += Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;
+          break;
+        //downleft-110
+        case -3 * Math.PI / 4:
+          this.hoverSpeed = -this.backFan + this.sideFan;
+          this.mDirection += Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;          
+          break;
+        //downright-011
+        case 3 * Math.PI / 4:
+          this.hoverSpeed = -this.backFan + this.sideFan;
+          this.mDirection -= Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;          
+          break;
+        case -10:
+        default:
+          return;
+      }
+
+    } 
+
+    else if(this.mode == 3) {
+
+      switch(this.pmDirection) {
+        //up-111
+        case 0:
+          this.hoverSpeed = 2 * this.sideFan + this.backFan;
+          moveCost = this.backFanCost + 2 * this.sideFanCost;
+          break;
+        //down-999
+        case Math.PI:
+          this.hoverSpeed = -2 * this.sideFan - this.backFan;
+          moveCost = this.backFanCost + 2 * this.sideFanCost;
+          break;
+        //left-901
+        case -Math.PI / 2:
+          this.hoverSpeed = this.sideFan;
+          this.mDirection -= 2 * Math.PI * this.turnRate;
+          moveCost = this.sideFanCost;
+          break;
+        //right-109
+        case Math.PI / 2:
+          this.hoverSpeed = this.sideFan;
+          this.mDirection += 2 * Math.PI * this.turnRate;
+          moveCost = this.sideFanCost;
+          break;
+        //upleft-110
+        case -Math.PI / 4:
+          this.hoverSpeed = this.backFan + this.sideFan;
+          this.mDirection -= Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;
+          break;
+        //upright-011
+        case Math.PI / 4:
+          this.hoverSpeed = this.backFan + this.sideFan;
+          this.mDirection += Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;
+          break;
+        //downleft-990
+        case -3 * Math.PI / 4:
+          this.hoverSpeed = -this.backFan - this.sideFan;
+          this.mDirection += Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;          
+          break;
+        //downright-099
+        case 3 * Math.PI / 4:
+          this.hoverSpeed = -this.backFan - this.sideFan;
+          this.mDirection -= Math.PI * this.turnRate;
+          moveCost = this.sideFanCost + this.backFanCost;          
+          break;
+        case -10:
+        default:
+          return;
+      }
+    }
+
+    else console.log("hover problem");
     
     if(this.mDirection > Math.PI) {
 
@@ -299,16 +390,7 @@ class Player extends ObjectClass {
 
   setMoveDirection(mDir) {
 
-
-    if(mDir < 10 && this.mode == 0) {
-      
-      this.pmDirection = mDir;
-    }
-
-    else if(mDir >= 10 && (this.mode == 1 || this.mode == 2)) {
-      console.log("change");
-      this.hoverControl = mDir
-    }
+    this.pmDirection = mDir;
   }
 
   changeStats(values) {
@@ -353,8 +435,7 @@ class Player extends ObjectClass {
 
   reload(){
 
-    if(this.clip < this.clipSize && !this.reload)
-      this.reload = true;
+    this.reload = this.clip < this.clipSize || this.reload;
   }
 
   serializeForUpdate() {

@@ -57,7 +57,7 @@ function standardMovement() {
     moveDir -= 1;
   }
 
-
+  console.log(moveDir);
   switch (moveDir) {
     case 1:
       updateMoveDir(-Math.PI / 2);
@@ -89,51 +89,6 @@ function standardMovement() {
   }
 }
 
-function hoverMovement() {
-
-  let moveDir = 0;
-
-  if (log[1][1] == true) {
-
-    moveDir += 4;
-  }
-
-  if (log[1][2] == true) {
-
-    moveDir += 1;
-  }
-
-  if (log[1][3] == true) {
-
-    moveDir += 2;
-  }
-
-  if (log[1][0] == true) {
-
-    if(moveDir == 1) {
-
-      moveDir = 5;
-    }
-
-    else if(moveDir == 2) {
-
-      moveDir = 6;
-    }
-    
-    else if(moveDir == 3) {
-
-      moveDir = 8;
-    }
-    else {
-
-      moveDir = 7;
-    }
-  }
-  console.log("Here!");
-  updateMoveDir(10 * (moveDir + 1))
-
-}
-
 function onKeyInput(e) {
 
   /*   left  += -1 
@@ -152,22 +107,13 @@ function onKeyInput(e) {
    */
   for (let i = 0; i < log[0].length; i++) {
 
-    if (e.key == log[0][i] || (log[0][i].match(/^[a-z]$/) && e.key == log[0][i].toUpperCase())) {
+    if (e.key.toLowerCase() == log[0][i]) {
 
-      console.log("here");
       log[1][i] = true;
     }
   }
-  console.log(log[1]);
-  if (values[Constants.M] == 0) {
 
-    standardMovement();
-  }
-
-  else if (values[Constants.M] == 1 || values[Constants.M] == 2) {
-
-    hoverMovement();
-  }
+  standardMovement();
 
 }
 
@@ -211,20 +157,15 @@ function onKeyLift(e) {
 
   else {
 
-    for (let i = 0; i < log[0].length; i++)
-      if (e.key == log[0][i] || (log[0][i].match(/^[a-z]$/) && e.key == log[0][i].toUpperCase())) {
+    for (let i = 0; i < log[0].length; i++) {
+      
+      if (e.key.toLowerCase() == log[0][i]) {
+        
         log[1][i] = false;
+      }  
+    }
 
-        if (values[Constants.M] == 0) {
-
-          standardMovement();
-        }
-
-        else if (values[Constants.M] == 1 || values[Constants.M] == 2) {
-
-          hoverMovement();
-        }
-      }
+    standardMovement();
   }
 }
 function sendStats() {
@@ -252,8 +193,11 @@ function sendStats() {
     if (values[Constants.M] == 0) {
 
       values[Constants.TR] = 1
-      document.getElementById(elements[Constants.TR] + "R").value = 1
-      document.getElementById(elements[Constants.TR] + "T").value = 1
+      document.getElementById(elements[Constants.TR] + "R").value = 1;
+      document.getElementById(elements[Constants.TR] + "T").value = 1;
+      invertHover();
+      document.getElementById("invertHoverH").checked = false;
+      document.getElementById("invertHoverH").disabled = true;
     }
 
     else if (values[Constants.M] == 1) {
@@ -261,6 +205,7 @@ function sendStats() {
       values[Constants.TR] = 0.015;
       document.getElementById(elements[Constants.TR] + "R").value = 0.015;
       document.getElementById(elements[Constants.TR] + "T").value = 0.015;
+      document.getElementById("invertHoverH").disabled = false;
     }
 
     else if (values[Constants.M] == 2) {
@@ -268,6 +213,7 @@ function sendStats() {
       values[Constants.TR] = 0.015;
       document.getElementById(elements[Constants.TR] + "R").value = 0.015;
       document.getElementById(elements[Constants.TR] + "T").value = 0.015;
+      document.getElementById("invertHoverH").disabled = false;
     }
   }
 
@@ -409,8 +355,9 @@ function removeSettFunc() {
   document.getElementById("invertHoverH").removeEventListener('click', invertHover);
 }
 
-function invertHover(e) {
+function invertHover() {
 
+  
   if(document.getElementById("invertHoverH").checked) {
 
     log[0][2] = "d";

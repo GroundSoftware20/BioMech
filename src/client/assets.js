@@ -2,6 +2,8 @@ const ASSET_NAMES = [
   'ship.png',
   'bullet.png',
   'backpanel.png',
+  'hoverBase001.png',
+  'hoverTurret001.png',
   //'Hovercraft_v1.0.1_P3D',
   //'Hovercraft_v1.0.2_allminusturret_P3D'
 ];

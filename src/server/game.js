@@ -40,7 +40,7 @@ class Game {
     if (this.players[socket.id]) {
 
       this.players[socket.id].setDirection(dir);
-      console.log("gi" + eType);
+      
       if(eType == 'mousedown') {
 
         this.players[socket.id].setShoot(true);
