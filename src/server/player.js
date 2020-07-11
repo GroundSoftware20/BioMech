@@ -8,9 +8,9 @@ class Player extends ObjectClass {
     super(id, x, y, Math.random() * 2 * Math.PI, Constants.PLAYER_SPEED);
     this.username = username;
     this.score = 0;
-    this.mDirection = 0;
-    this.pmDirection = -10;
-    this.dpDirection = this.direction;
+    this.mDirection = 0;                //direction the craft is moving
+    this.pmDirection = -10;             //direction the craft is trying to move to
+    this.dpDirection = this.direction;  //direction craft is shooting
     this.shoot = false;
     this.reload = false;
 
@@ -38,6 +38,8 @@ class Player extends ObjectClass {
     this.backFan = Constants.PLAYER_BACK_FAN;
     this.sideFanCost = Constants.PLAYER_SIDE_FAN_COST;
     this.backFanCost = Constants.PLAYER_BACK_FAN_COST;
+    this.sideFanSize = Constants.PLAYER_SIDE_FAN_SIZE;
+    this.backFanSize = Constants.PLAYER_BACK_FAN_SIZE;
 
     this.firingCooldown = this.firingTime;
     this.reloadProgress = this.reloadTime;
@@ -77,7 +79,10 @@ class Player extends ObjectClass {
       this.energy -= this.firingCost;
       this.clip -= 1;
       this.reload = false;
-      return new Bullet(this.id, this.x, this.y, this.direction, this.bulletSpeed, this.bulletSize, this.bulletDamage, this.bulletRange);
+      return new Bullet(this.id, this.x + 50 * Math.sin(this.mDirection) * this.tankSize / 135, 
+                        this.y +- 50 * Math.cos(this.mDirection) * this.tankSize / 135, 
+                        this.direction, this.bulletSpeed, this.bulletSize, this.bulletDamage, 
+                        this.bulletRange);
     }
 
     if((this.reload || this.clip == 0) && this.clip < this.clipSize) {
@@ -157,6 +162,7 @@ class Player extends ObjectClass {
     var moveCost = 0;
     
     if(this.mode == 1) {
+
       switch(this.pmDirection) {
         //up-111
         case 0:
@@ -431,6 +437,8 @@ class Player extends ObjectClass {
     this.backFan = values[21];
     this.sideFanCost = values[22];
     this.backFanCost = values[23];
+    this.sideFanSize = values[24];
+    this.backFanSize = values[25];
   }
 
   reload(){
@@ -452,6 +460,8 @@ class Player extends ObjectClass {
       clip: this.clip,
       username: this.username,
       mode: this.mode,
+      sideFanSize: this.sideFanSize,
+      backFanSize: this.backFanSize,
     };
   }
 }

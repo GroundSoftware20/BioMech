@@ -6,7 +6,7 @@ const Constants = require('../shared/constants');
 var modeChange = false;
 //up, down, left, right
 var log = [["w", "s", "a", "d"], [false, false, false, false]];
-var elements = ["health", "tankSize", "tankSpeed", "energyCap", "energyRegen", "speedCost", "fireCost", "reloadCost", "bulletDam", "bulletSpeed", "bulletSize", "firingRate", "clipSize", "reloadRate", "bulletRange", "vision", "regen", "turnRate", "firingArc", "mode", "sideFan", "backFan", "sideFanCost", "backFanCost"];
+var elements = ["health", "tankSize", "tankSpeed", "energyCap", "energyRegen", "speedCost", "fireCost", "reloadCost", "bulletDam", "bulletSpeed", "bulletSize", "firingRate", "clipSize", "reloadRate", "bulletRange", "vision", "regen", "turnRate", "firingArc", "mode", "sideFan", "backFan", "sideFanCost", "backFanCost", "sideFanSize", "backFanSize"];
 //remember to change both html and javascript
 var values = [Constants.PLAYER_MAX_HP,
 Constants.PLAYER_RADIUS,
@@ -31,7 +31,15 @@ Constants.PLAYER_MODE,
 Constants.PLAYER_SIDE_FAN,
 Constants.PLAYER_BACK_FAN,
 Constants.PLAYER_SIDE_FAN_COST,
-Constants.PLAYER_BACK_FAN_COST];
+Constants.PLAYER_BACK_FAN_COST,
+Constants.PLAYER_SIDE_FAN_SIZE,
+Constants.PLAYER_BACK_FAN_SIZE,
+];
+
+export function getLog(i){
+
+  return log[1][i];
+}
 
 function standardMovement() {
 
@@ -57,7 +65,6 @@ function standardMovement() {
     moveDir -= 1;
   }
 
-  console.log(moveDir);
   switch (moveDir) {
     case 1:
       updateMoveDir(-Math.PI / 2);
@@ -131,7 +138,10 @@ function onKeyLift(e) {
       document.getElementById('sett').classList.remove('hidden');
     }
 
-    else document.getElementById('sett').classList.add('hidden');
+    else {
+
+       document.getElementById('sett').classList.add('hidden');
+    }
   }
 
   else if (e.key == "Enter") {
@@ -360,15 +370,33 @@ function invertHover() {
   
   if(document.getElementById("invertHoverH").checked) {
 
+    if(log[0][2] == "a" && log[1][2] != log[1][3]) {
+
+      log[1][2] = !log[1][2];
+      log[1][3] = !log[1][3];
+
+      standardMovement();
+    }
+
     log[0][2] = "d";
     log[0][3] = "a";
   }
 
   else {
 
+    if(log[0][2] == "d" && log[1][2] != log[1][3]) {
+
+      log[1][2] = !log[1][2];
+      log[1][3] = !log[1][3];
+
+      standardMovement();
+    }
+
     log[0][2] = "a";
     log[0][3] = "d";    
   }
+
+  console.log(log[1]);
 }
 
 function onClickOff(e) {

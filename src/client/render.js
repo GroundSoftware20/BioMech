@@ -4,6 +4,7 @@ import { downloadAssets } from './assets';
 import { debounce } from 'throttle-debounce';
 import { getAsset } from './assets';
 import { getCurrentState } from './state';
+import { getLog } from './input';
 
 const Constants = require('../shared/constants');
 
@@ -127,24 +128,49 @@ function renderPlayer(me, player) {
       player.tankSize * 2,
       player.tankSize * 2,
     );
+    
+    if(player.mode == 1) {
+
+      var left = 3;
+      var right = 2;
+
+      if((getLog(left) || (getLog(0) && !getLog(1))) && !getLog(right)) {
+        context.drawImage(
+          getAsset("frontWind.png"),
+          -0.80 * player.tankSize,
+          0.20 * player.tankSize,
+          player.sideFanSize * 2,
+          player.sideFanSize,
+        );
+      }
+
+      if((getLog(right) || (getLog(0) && !getLog(1))) && !getLog(left)) {
+        context.drawImage(
+          getAsset("frontWind.png"),
+          0.60 * player.tankSize,
+          0.20 * player.tankSize,
+          player.sideFanSize * 2,
+          player.sideFanSize,
+        );
+      }
+
+      if((getLog(1) && !getLog(0)) || (!getLog(1) && getLog(0))) {
+        context.drawImage(
+          getAsset("frontWind.png"),
+          -0.75 * player.backFanSize,
+          0.90 * player.tankSize,
+          player.backFanSize * 2,
+          player.backFanSize,
+        );
+      }
+    }
 
     context.rotate(player.direction - player.mDirection);
-    var up = 1;
-
-    if(Math.abs(player.direction - player.mDirection) > Math.PI / 2) {
-
-      up = -1
-    }
 
     context.drawImage(
       getAsset("hoverTurret001.png"), 
       -player.tankSize - 50 * player.tankSize / 135 * Math.sin(player.direction - player.mDirection),
-      -player.tankSize  + 50 * player.tankSize / 135 * (1 - Math.cos(player.direction - player.mDirection)), //+ 50 * player.tankSize / 135 * (Math.sin(Math.PI / 2 - (player.direction - player.mDirection)) - 1),
-      // 
-      //-player.tankSize + 15 * player.tankSize / 135 * Math.cos(Math.PI / 2 + (player.direction - player.mDirection) / 2), 
-      //-player.tankSize + 15 * player.tankSize / 135 * (Math.sin(Math.PI / 2 + (player.direction - player.mDirection) / 2)),
-      // - 22 * player.tankSize / 135 * Math.cos(Math.PI / 2 + (player.direction - player.mDirection) / 2),
-      //-22 * player.tankSize / 135 * (Math.sin(Math.PI / 2 + (player.mDirection - player.direction) / 2) - 1),
+      -player.tankSize  + 50 * player.tankSize / 135 * (1 - Math.cos(player.direction - player.mDirection)), 
       player.tankSize * 2,
       player.tankSize * 2,
     );
